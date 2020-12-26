@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 
 def compress_rle(data):

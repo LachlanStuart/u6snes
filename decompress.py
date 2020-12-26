@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import argparse
 MAX_CW_SIZE = 12
 CW_MASK = [2 ** i - 1 for i in range(16)]
