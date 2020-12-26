@@ -25,13 +25,18 @@ def compress_rle(data):
       last_datum = datum
       yield datum
 
-  for i in range(count):
-    yield last_datum
+  if count >= 2:
+    yield 0x81
+    yield count + 1
+  else:
+    for i in range(count):
+      yield last_datum
 
 def compress_lzw(data):
   dictionary = []
   # init
   prev = data[0:1]
+  prev_cw = 0
   yield 0x101, 0x100, b''
   yield 0x101, prev[0], prev
   data = data[1:]
@@ -44,22 +49,36 @@ def compress_lzw(data):
         longest_i = i
         longest_len = len(string)
 
-    # TODO: The decompressor has a special code path for when cw == cw_next
-    # which isn't considered during compression. Figure out what it does.
-
-    if longest_len:
-      string = dictionary[longest_i]
-      yield len(dictionary) + 0x102, 0x102 + longest_i, string
+    # The decompressor supports a special case when cw == cw_next it repeats the
+    # last cw's string, then repeats the first byte of that string.
+    if prev_cw >= 0x102:
+      special = dictionary[prev_cw - 0x102]
+      special = special + special[:1]
     else:
+      special = None
+
+    if special is not None and len(special) >= longest_len and data.startswith(special):
+      # The special case was better than a dictionary match, use it
+      string = special
+      cw = 0x102 + len(dictionary)
+    elif longest_len:
+      # Found a good dictionary match
+      string = dictionary[longest_i]
+      cw = 0x102 + longest_i
+    else:
+      # No dictionary match - emit the raw value
       string = data[0:1]
-      yield len(dictionary) + 0x102, string[0], string
+      cw = string[0]
+    yield len(dictionary) + 0x102, cw, string
     dictionary.append(prev + string[0:1])
     prev = string
+    prev_cw = cw
     data = data[len(string):]
 
     if len(dictionary) + 0x102 >= 0x1000:
       # init
       prev = data[0:1]
+      prev_cw = 0
       yield len(dictionary) + 0x102, 0x100, b''
       dictionary = []
       yield 0x101, prev[0], prev
@@ -128,17 +147,17 @@ def main(in_path, out_path, debug_path):
   lzw_strings = list(compress_lzw(rle_bytes))
   print(f'Compressed to {len(lzw_strings)} LZW codewords')
   if debug_path is not None:
-    write_lzw_debug_file(debug_file, lzw_strings)
+    write_lzw_debug_file(open(debug_path, 'wt'), lzw_strings)
     print('Wrote debug file')
   packed_bytes = pack_lzw_cws(lzw_strings)
   print(f'Compressed to {len(packed_bytes)} bytes')
 
   if out_offset is not None:
-    out_file = open(out_path, '+b')
-    out_file.seek(out_offset)
+    out_data = bytearray(open(out_path, 'rb').read())
+    out_data[out_offset:out_offset+len(packed_bytes)] = packed_bytes
+    open(out_path, 'wb').write(out_data)
   else:
-    out_file = open(out_path, 'wb')
-  out_file.write(packed_bytes)
+    open(out_path, 'wb').write(packed_bytes)
 
 
 if __name__ == '__main__':

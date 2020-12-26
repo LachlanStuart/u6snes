@@ -62,14 +62,13 @@ def decompress_lzw(codewords):
       dictionary = []
     else:
       if cw < cw_next:
-        # codeword is already in dictionary
+        # Normal case - cw is either a dictionary entry (>0x102) or a literal value
         string = get_dict_string(cw)
         yield addr, cw_next, cw, string
       else:
-        # codeword not yet in dictionary
-        # This path isn't used at all in the first dialog block, but it's used in the intro data. IDK if it actually works.
-        # assert False, addr
-        print(f'{addr: 8x}\t{cw_next: 4x}\t{cw: 4x}\t{string.hex()}{"  " * (16 - len(string))}\t{string.decode("ascii", errors="replace")}')
+        # Special case - use last cw's string, then repeat the first byte.
+        # Don't think too hard about it. It saves bytes, it doesn't need to make sense.
+        # This case isn't used in some files, but it's used by the title screen data.
         string = get_dict_string(pw)
         yield addr, cw_next, cw, string + string[0:1]
 
@@ -139,7 +138,7 @@ def main(in_path, out_path, debug_path):
   lzw_strings = list(decompress_lzw(codewords))
   print(f'Decompressed LZW to {len(lzw_strings)} strings')
   if debug_path is not None:
-    write_lzw_debug_file(debug_file, lzw_strings)
+    write_lzw_debug_file(open(debug_path, 'wt'), lzw_strings)
     print('Wrote debug file')
 
   lzw_bytes = extract_data_from_lzw_lines(lzw_strings)
@@ -148,7 +147,7 @@ def main(in_path, out_path, debug_path):
   print(f'Decompressed RLE to {len(out_data)} bytes')
 
   if out_offset is not None:
-    out_file = open(out_path, '+b')
+    out_file = open(out_path, 'w+b')
     out_file.seek(out_offset)
   else:
     out_file = open(out_path, 'wb')
