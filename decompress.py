@@ -11,7 +11,7 @@ def iter_codewords(stream):
   cw_size = 9
   cw_next = 0x102
 
-  while True:
+  for i in range(0x4000):
     addr = bits_read
     bits_read += cw_size
     while buf_len < cw_size:
@@ -40,6 +40,7 @@ def iter_codewords(stream):
         else:
           # print(f'At {addr:04x} cw_size got too big. Next command should be reinit.')
           pass
+  raise Exception('Input was longer than expected (>16kB)')
 
 
 def decompress_lzw(codewords):
@@ -123,6 +124,38 @@ def parse_path_offset(path_and_offset):
     return path_and_offset, None
 
 
+def scan_file(in_path):
+  in_file = open(in_path, 'rb')
+  in_bytes = in_file.read()
+  potential_offsets = []
+  for off in range(0, len(in_bytes), 0x10):
+    if in_bytes[off] == 0 and in_bytes[off+1] & 1:
+      potential_offsets.append(off)
+
+  for in_offset in potential_offsets:
+    try:
+      in_file.seek(in_offset)
+      codewords = list(iter_codewords(in_file))
+      lzw_strings = list(decompress_lzw(codewords))
+      lzw_bytes = extract_data_from_lzw_lines(lzw_strings)
+      out_data = decompress_rle(lzw_bytes)
+      offset_after = in_file.tell()
+
+      while in_file.read(1) == b'\xFF':
+        pass
+      next_byte = in_file.tell()-1
+
+      if offset_after - in_offset > 100:
+        print(
+          f'| {in_offset:06x} | {offset_after:06x} | {offset_after-in_offset: 6} bytes '
+          f'| {len(out_data): 6} bytes | {len(out_data) / (offset_after-in_offset):.2f} : 1 '
+          f'| {next_byte - offset_after: 6} bytes |',
+          flush=True
+        )
+    except:
+      pass
+
+
 def main(in_path, out_path, debug_path):
   in_path, in_offset = parse_path_offset(in_path)
   out_path, out_offset = parse_path_offset(out_path)
@@ -135,6 +168,7 @@ def main(in_path, out_path, debug_path):
   codewords = list(iter_codewords(in_file))
   offset_after = in_file.tell()
   print(f'Read {len(codewords)} codewords from {in_offset:06x}-{offset_after:06x} ({offset_after-in_offset} bytes)')
+
   lzw_strings = list(decompress_lzw(codewords))
   print(f'Decompressed LZW to {len(lzw_strings)} strings')
   if debug_path is not None:
