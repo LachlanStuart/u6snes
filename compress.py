@@ -11,7 +11,7 @@ def compress_rle(data):
             yield 0x00
             # last_datum = None
             # count = 0
-        elif datum == last_datum and count < 255:
+        elif datum == last_datum and count < 254:
             count += 1
         elif count >= 2:
             yield 0x81
