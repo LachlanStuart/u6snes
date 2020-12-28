@@ -38,8 +38,8 @@ Y     cmp #$03
       jmp $008a16 ; Y - Open Inven. from menu
 SEL   cmp #$04
       bne STAR
-      ldx #$083b  ; Select - Cheat: set time to 8:59 am.
-      stx $7e0151 ; Set hour to 8
+      lda #$08    ; Select - Cheat: set time to 8:59 am.
+      sta $7e0151 ; Set hour to 8
       lda #$3b
       sta $7e0152 ; Set minute to 59
 STAR  cmp #$05
