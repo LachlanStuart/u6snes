@@ -32,20 +32,19 @@ X     cmp #$01
       jmp $0089fa ; Close menu (required to clean up)
 B     cmp #$02
       bne Y
-      jmp $89d8 ; A - Open menu
+      jmp $89d8   ; A - Open menu
 Y     cmp #$03
       bne SEL
-      jmp $008a16 ; Open Inven. from menu
+      jmp $008a16 ; Y - Open Inven. from menu
 SEL   cmp #$04
       bne STAR
-      ; Cheat: set time to 8:59 am.  
-      ldx #$083b
+      ldx #$083b  ; Select - Cheat: set time to 8:59 am.
       stx $7e0151 ; Set hour to 8
       lda #$3b
       sta $7e0152 ; Set minute to 59
 STAR  cmp #$05
       bne EXIT
-      ; TODO - add some function here
-EXIT  jmp $89a4 ; No button, continue original function
+                  ; Start - unbound
+EXIT  jmp $89a4   ; Button not handled - return to original function
 ```
     
