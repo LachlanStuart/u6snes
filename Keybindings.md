@@ -48,15 +48,26 @@ LOOP: asl
 
 
 Inject the new button handler at 7b73:
-```
-290FC900D00622768403803DC901D003
-4C168AC902D00622328403802CC903D0
-0622BB82038022C904D0034CD889C905
-D006220080038011C906D006A2083B8E
-5101C907D0004CA4894CFA89
 
+Without cheats:
+```
+290FC900D00622768403802FC901D003
+4C168AC902D00622328403801EC903D0
+0622BB82038014C904D0034CD889C905
+D0062200800380034CA4894CFA89
+```
+
+With cheats:
+```
+290FC900D006227684038042C901D003
+4C168AC902D006223284038031C903D0
+0622BB82038027C904D0034CD889C905
+D006220080038016C906D006A2083B8E
+5101C907D00520AFE180034CA4894CFA
+89
 ```
 (should overwrite values `FF FF FF FF ...`, compiled with https://www.asm80.com/onepage/asm65816.html)
+
 
 Source:
 ```asm
@@ -64,25 +75,25 @@ Source:
       and #$0f
 A:    cmp #$00
       bne X
-      jsr $038476 ; A - Look
+      jsr $038476   ; A - Look
       bra CLEANUP
 X:    cmp #$01
       bne L
-      jmp $008a16 ; X - Inventory
+      jmp $008a16   ; X - Inventory
 L:    cmp #$02
       bne R
-      jsr $038432 ; L - Cast
+      jsr $038432   ; L - Cast
       bra CLEANUP
 R:    cmp #$03
       bne B
-      jsr $0382bb ; R - Attack
+      jsr $0382bb   ; R - Attack
       bra CLEANUP
 B:    cmp #$04
       bne Y
-      jmp $89d8   ; B - Open menu
+      jmp $89d8     ; B - Open menu
 Y:    cmp #$05
       bne SEL
-      jsr $038000 ; Y - Talk
+      jsr $038000   ; Y - Talk
       bra CLEANUP
 SEL:  cmp #$06
       bne STA
@@ -92,10 +103,11 @@ SEL:  cmp #$06
       ;sta $7e0152
 STA:  cmp #$07
       bne EXIT
-                  ; Start - unbound
-EXIT: jmp $89a4   ; Button not handled - return to original function
-; Clean up by closing the menu. This is needed to fix state after Look,Talk,etc. however
-; it also re-runs the framerule causing moving NPCs to teleport one step ahead. 
-CLEANUP: jmp $89fa 
+      jsr $e1af     ; Start - Cheat: show minimap (cast peer with no cost)
+      bra CLEANUP
+EXIT: jmp $89a4     ; Button not handled - return to original function
+CLEANUP: jmp $89fa  ; Clean up by closing the menu. This is needed to fix state after Look,Talk,etc. however
+                    ; it also re-runs the framerule causing moving NPCs to teleport one step ahead. 
+
 ```
-    
+
