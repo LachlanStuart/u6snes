@@ -2,7 +2,7 @@ During normal exploration, only the D-Pad and A button are bound to actions.
 Inputs from B, X, Y, L, R, Start and Select are all discarded, requiring navigating through the menu to 
 perform any action other than opening the menu. This is an affront to UX design and cannot be allowed to stand.
 
-Inject this to overwrite the old A-button handler at 09a0: `4C 73 FB EA` (should overwrite values `29 0F F0 34`)
+**Inject this at `09a0`** to overwrite the old A-button handler: `4C 73 FB EA` (should overwrite values `29 0F F0 34`)
 
 Source:
 ```asm
@@ -10,16 +10,16 @@ Source:
       nop
 ```
 
-Inject this at 08c2 to allow L/R to be used: `29 f0 f0` (should overwrite values `29 c0 f0` meaning `and #$f0c0`)
+**Inject this at `08c2`** to allow L/R to be used: `29 f0 f0` (should overwrite values `29 c0 f0` meaning `and #$f0c0`)
 
-Inject this at 2572 to make the muxer generate values for L and R. 
+**Inject this at `2572`** to make the muxer generate values for L and R. 
 This function already has a 4-bit muxer loop for the BYST bits, it just needs to be duplicated for the AXLR bits. 
 Previously this function returned values 123456 for buttons AXBYST, with this mod it returns 12345678 for AXLRBYST.
 ```
 A5 01 4A 4A 4A 4A 05 00 0A B0 0C E8 E0 00 09 90
 F7 EA EA EA
 ```
-Should replace:
+Should overwrite values:
 ```
 A5 00 30 13 E8 0A 30 0F E8 A5 01 0A B0 09 E8 E0
 0A 00 90 F7
@@ -47,7 +47,7 @@ LOOP: asl
 
 
 
-Inject the new button handler at 7b73:
+**Inject this at `7b73`** to add the new button handler:
 
 Without cheats:
 ```
