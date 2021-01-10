@@ -244,16 +244,30 @@ This gives it a body, at least, but the wrong palette is used.
  
 ### Move the giant ant to another row
 1. Update `4497` to `BF C4 EF 02 48 C2 20 BF C2 EF 02` (should overwrite `BF 9D E7 02 48 C2 20 BF 9B E7 02`)
+
+    This changes the code to look in the new location for the graphics row -> address lookup table
 2. Update `1676c` to `39` (should overwrite `2E`)
-2. Copy the range `1679b`-`16845` (inclusive) to `16fc2`-`1706d` (should overwrite `FF FF FF ...`)
-3. Update `1706e` to `00 F4 1F` (should overwrite `FF FF FF`)
+
+    This changes the Giant Ant to use graphics row `39`
+2. Copy the range `1679b`-`16845` (inclusive) to `16fc2`-`1706c` (should overwrite `FF FF FF ...`)
+
+    This moves the graphics row -> address lookup table (`0x39` entries * 3 bytes each) to an empty spot
+3. Update `1706d` to `00 F4 1F` (should overwrite `FF FF FF`)
+
+    This adds a new entry to the end of the newly moved lookup table, mapping row ID `39` to address `1F F4 00`
 4. Copy `fe800`-`febff` (inclusive) to `ff400` (should overwrite `FF FF FF ...`)
+
+    This copies the actual graphics data to the new address
 
 ### Change the animation and render functions to the dragon functions
 
 #### With palette fix:
 1. Update `45F9` to `46 C8` (should overwrite `7F C6`)
+
+    This updates the serpent's animation function
 2. Update `26af` to `D0 FB` (should overwrite `33 A7`)
+
+    This updates the serpent's render function
 3. Update `7bd0` to `A50438E9000485044C47B1` (should overwrite `FF FF FF ...`)
 
 Source for new function:
