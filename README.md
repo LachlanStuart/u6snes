@@ -18,10 +18,6 @@ optional arguments:
                    strings
 ```
 
-Known offsets of data files inside the USA Ultima 6 ROM:
-* `0x28060` - the title screen
-* `0x48000` - the first dialog file (contains dialog for the Avatar, companions, Lord British, etc.)
-
 # Compressing LZW data
 ```
 usage: compress.py [-h] [--debug [DEBUG]] in_path out_path
@@ -122,4 +118,4 @@ It may not be 100% accurate.
 | 0e0000 | 0e0fa9 |   4009 bytes |   5472 bytes | 1.36 : 1 |     87 bytes |  ✔️  |    |
 | 0e1000 | 0e31ae |   8622 bytes |  12729 bytes | 1.48 : 1 |     82 bytes |  3 bytes smaller  |    |
 | 0e3200 | 0e47ba |   5562 bytes |   7625 bytes | 1.37 : 1 |     70 bytes |  Same size, different bytes  |    |
-    | 
+     

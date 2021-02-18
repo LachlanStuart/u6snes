@@ -62,8 +62,8 @@ The function at `$388af` loads more during boot, though I haven't read through i
 
 * `$7e8200`, `$7e8e00` & `$7e9000` (X & Y coordinates), `$7e9600` & `$7e9800` (initial X & Y coordinates?)
     * Loaded from ROM address `18c3d`, 4 bytes per mob
-    * X coordinate gets the first 10 bytes
-    * Y coordinate gets next 10 bytes
+    * X coordinate gets the first 10 bits
+    * Y coordinate gets next 10 bits
     * `$7e8200` first byte gets the 3rd byte from ROM
 
 # Sprite loading

@@ -126,7 +126,7 @@ def pack_lzw_cws(lzw_strings):
             out.append(res.to_bytes(4, "little")[0])
             res_bits -= 8
             res = res >> 8
-    while res_bits >= 0:
+    while res_bits > 0:
         out.append(res.to_bytes(4, "little")[0])
         res_bits -= 8
         res = res >> 8
