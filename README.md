@@ -58,11 +58,11 @@ It may not be 100% accurate.
 | -----: | -----: | -----------: | -----------: | -------- | -----------: | :-: | -- |
 | 01d700 | 01fef6 |  10230 bytes |  17479 bytes | 1.71 : 1 |    266 bytes |  ✔️  |    |
 | 028060 | 029c62 |   7170 bytes |  12132 bytes | 1.69 : 1 |     46 bytes |  ✔️  | Title screen graphics |
-| 029e50 | 02dda1 |  16209 bytes |  21824 bytes | 1.35 : 1 |     15 bytes |  1 byte larger | Intro graphics? (loaded 1st before intro cutscene) |
-| 02ddb0 | 02e586 |   2006 bytes |  30720 bytes | 15.3 : 1 |     10 bytes |  1 byte larger | Intro graphics? (loaded 3rd before intro cutscene) |
-| 02e590 | 02efd5 |   2629 bytes |   5088 bytes | 1.94 : 1 |     60 bytes |  3 bytes smaller | Intro graphics? (loaded 2nd before intro cutscene) |
-| 02f1d0 | 02f913 |   1859 bytes |   3488 bytes | 1.88 : 1 |     13 bytes |  ✔️  |    |
-| 02f920 | 02fdb9 |   1177 bytes |  11520 bytes | 9.79 : 1 |    583 bytes |  ✔️ |    |
+| 029e50 | 02dda1 |  16209 bytes |  21824 bytes | 1.35 : 1 |     15 bytes |  1 byte larger | Intro graphics (loaded 1st before intro cutscene) |
+| 02ddb0 | 02e586 |   2006 bytes |  30720 bytes | 15.3 : 1 |     10 bytes |  1 byte larger | Intro graphics (loaded 3rd before intro cutscene) |
+| 02e590 | 02efd5 |   2629 bytes |   5088 bytes | 1.94 : 1 |     60 bytes |  3 bytes smaller | Intro graphics (loaded 2nd before intro cutscene) |
+| 02f1d0 | 02f913 |   1859 bytes |   3488 bytes | 1.88 : 1 |     13 bytes |  ✔️  | End cutscene graphics |
+| 02f920 | 02fdb9 |   1177 bytes |  11520 bytes | 9.79 : 1 |    583 bytes |  ✔️ | End cutscene graphics |
 | 048000 | 049cf0 |   7408 bytes |  12026 bytes | 1.62 : 1 |     16 bytes |  ✔️  | Dialog (companions, Lord British, etc.) |
 | 049d00 | 04b861 |   7009 bytes |  11033 bytes | 1.57 : 1 |    159 bytes |  ✔️  | Dialog |
 | 04b900 | 04de05 |   9477 bytes |  15210 bytes | 1.60 : 1 |    251 bytes |  ✔️  | Dialog |
@@ -99,9 +99,9 @@ It may not be 100% accurate.
 | 09f500 | 09f92f |   1071 bytes |   6536 bytes | 6.10 : 1 |   1745 bytes |  1 byte larger  |    |
 | 0bf100 | 0bf81a |   1818 bytes |   2710 bytes | 1.49 : 1 |   2022 bytes |  ✔️  |    |
 | 0cd400 | 0cea21 |   5665 bytes |   8164 bytes | 1.44 : 1 |     95 bytes |  Same size, different bytes  |    |
-| 0cea80 | 0cfcf1 |   4721 bytes |   6682 bytes | 1.42 : 1 |    783 bytes |  1 byte larger  |    |
-| 0d0000 | 0d2133 |   8499 bytes |  12492 bytes | 1.47 : 1 |     77 bytes |  3 bytes larger  |    |
-| 0d2180 | 0d41e3 |   8291 bytes |  13397 bytes | 1.62 : 1 |     29 bytes |  ✔️  |    |
+| 0cea80 | 0cfcf1 |   4721 bytes |   6682 bytes | 1.42 : 1 |    783 bytes |  1 byte larger  | Tile data |
+| 0d0000 | 0d2133 |   8499 bytes |  12492 bytes | 1.47 : 1 |     77 bytes |  3 bytes larger  | Tile data |
+| 0d2180 | 0d41e3 |   8291 bytes |  13397 bytes | 1.62 : 1 |     29 bytes |  ✔️  | Tile data |
 | 0d4200 | 0d65e5 |   9189 bytes |  14189 bytes | 1.54 : 1 |     27 bytes |  1 byte smaller  | Tile data in castle |
 | 0d6600 | 0d67b1 |    433 bytes |    701 bytes | 1.62 : 1 |     79 bytes |  2 bytes larger  |    |
 | 0d6800 | 0d6d2c |   1324 bytes |   1632 bytes | 1.23 : 1 |     84 bytes |  1 byte larger  |    |
@@ -111,9 +111,9 @@ It may not be 100% accurate.
 | 0d7500 | 0d7c4e |   1870 bytes |   3091 bytes | 1.65 : 1 |    946 bytes |  ✔️  |    |
 | 0d8000 | 0d94da |   5338 bytes |   7352 bytes | 1.38 : 1 |     38 bytes |  1 byte smaller️  |    |
 | 0d9500 | 0da2b2 |   3506 bytes |   5175 bytes | 1.48 : 1 |     78 bytes |  3 bytes smaller  |    |
-| 0da300 | 0dc0d3 |   7635 bytes |  12026 bytes | 1.58 : 1 |     45 bytes |  Same size, different bytes  |    |
-| 0dc100 | 0de067 |   8039 bytes |  11655 bytes | 1.45 : 1 |    153 bytes |  ✔️  |    |
-| 0de100 | 0df199 |   4249 bytes |   6094 bytes | 1.43 : 1 |    103 bytes |  ✔️  |    |
+| 0da300 | 0dc0d3 |   7635 bytes |  12026 bytes | 1.58 : 1 |     45 bytes |  Same size, different bytes  | Tile data |
+| 0dc100 | 0de067 |   8039 bytes |  11655 bytes | 1.45 : 1 |    153 bytes |  ✔️  | Tile data |
+| 0de100 | 0df199 |   4249 bytes |   6094 bytes | 1.43 : 1 |    103 bytes |  ✔️  | Tile data |
 | 0df200 | 0dfdd1 |   3025 bytes |   4492 bytes | 1.48 : 1 |    559 bytes |  ✔️  |    |
 | 0e0000 | 0e0fa9 |   4009 bytes |   5472 bytes | 1.36 : 1 |     87 bytes |  ✔️  |    |
 | 0e1000 | 0e31ae |   8622 bytes |  12729 bytes | 1.48 : 1 |     82 bytes |  3 bytes smaller  |    |
